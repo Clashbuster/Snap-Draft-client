@@ -1,58 +1,48 @@
 import React from 'react';
 import './App.css';
 // import React from 'react.js';
+import LoginPage from '../src/components/LoginPage.js'
+import DashBoard from '../src/components/DashBoard.js'
+import DocShow from '../src/components/DocShow.js'
+import NavBar from '../src/components/NavBar.js'
+import Sprint from '../src/components/Sprint.js'
+import Stats from '../src/components/Stats.js'
+import MissionStatement from '../src/components/MissionStatement.js'
+import {Button, Box, Heading} from '@primer/components'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams,
+  Redirect
+} from "react-router-dom";
+import Fetcher from './HOC/Fetcher.js'
+import PrivateRoute from './HOC/PrivateRoute.js'
 
-let example = ''
 
 class App extends React.Component {
 
-signup (e){
-  e.preventDefault()
-  fetch('http://localhost:3000/api/v1/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify({
-      user: {
-        username: 'guy215',
-        password: 'hi'
-      }
-    })
-  })
-    .then(r => r.json())
-    .then(data => {
-      console.log(data)
-    })
-}
 
-login(e){
-  e.preventDefault()
-  fetch('http://localhost:3000/api/v1/login', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-      Accept: 'application/json'
-  },
-  body: JSON.stringify({
-    user: {
-      username: 'guy215',
-      password: 'hi'
-    }
-  })
-})
-  .then(r => r.json())
-    .then(console.log)
-}
 
 
 
 render (){
     return (
       <div className="App">
-        <button onClick={e => this.signup(e)}>make new user with salt</button>
-        <button onClick={e => this.login(e)}>login with jwt</button>
+        <Router>
+          <NavBar ></NavBar>
+              <Switch>
+                <Route path="/login" render={() => <LoginPage></LoginPage>}>
+                </Route>
+
+                <Route path="/mission-statement" render={(props) => <MissionStatement {...props} ></MissionStatement>}>
+                </Route>
+
+                <PrivateRoute  path="/users/:id/dashboard" component={DashBoard}></PrivateRoute>
+              </Switch>
+        </Router>
       </div>
     );
   }
