@@ -8,7 +8,7 @@ export default class Stats extends React.Component {
 
     render(){
         return (
-            <div>Stats</div>
+            <div className="border-top mx-5">Stats</div>
         )
     }
 }

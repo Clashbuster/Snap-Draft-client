@@ -2,6 +2,13 @@ import React from 'react';
 import Fetcher from '../HOC/Fetcher.js'
 import NovelButton from './NovelButton.js'
 import PageButton from './PageButton.js'
+import Sprint from "./Sprint.js"
+import DocShow from "./DocShow.js"
+import Stats from "./Stats.js"
+import MissionStatement from "./MissionStatement.js"
+import DeleteNovel from "./DeleteNovel.js"
+import NewNovelForm from "./NewNovelForm.js"
+import Blank from '../HOC/Blank.js'
 
 
 
@@ -12,9 +19,43 @@ export default class DashBoard extends React.Component {
         this.state = {
             novels : [],
             selectedNovel : "",
-            pageSelection : ""
+            pageSelection : "",
+            novelToSend: {},
+            chaptersToSend: []
         }
+        this.getNovels()
+    }
+
+    deleteNovel = () => {
+        // console.log("deleting", this.state.selectedNovel)
+        Fetcher.deleteNovel(localStorage.getItem('user'), this.state.selectedNovel, this.finalizeDeletion)
+        
+    }
+
+    finalizeDeletion = () => {
+        this.setState({selectedNovel: ""})
+        this.getNovels()
+    }
+
+
+    sprintSubmitHandler = (data) => {
+        console.log(data, 'sprint submitted')
+        this.setState({chaptersToSend: data})
+    }
+
+    getNovels(){
         Fetcher.getNovels(localStorage.getItem('user'), this.populateState)
+    }
+
+    submitNewNovel = (novelObj) => {
+        console.log(novelObj, 'novel submitted from dashboard')
+        Fetcher.postNewNovel(localStorage.getItem('user'), novelObj, this.addNewNovelToState)
+    }
+
+    addNewNovelToState = (data) => {
+        this.setState(prev => {
+            return {novels: [...prev.novels, data]} 
+        })
     }
 
     populateState = (data) => {
@@ -25,11 +66,24 @@ export default class DashBoard extends React.Component {
         console.log(this.state)
     }
 
-    handleNovelClick = (title) => {
-        this.setState({selectedNovel: title})
+    updateChapters= (data)=>{
+        this.setState({chaptersToSend : data })
     }
 
-    handlePageSelection = (selection) => {
+    handleNovelClick = (e, title) => {
+        e.preventDefault()
+
+        Fetcher.getChapters(localStorage.getItem('user'), title, this.updateChapters)
+
+        this.setState({
+            selectedNovel: title,
+            novelToSend: this.findNovel(title)
+        })
+
+    }
+
+    handlePageSelection = (e, selection) => {
+        e.preventDefault()
         this.setState({pageSelection: selection})
     }
 
@@ -43,7 +97,8 @@ export default class DashBoard extends React.Component {
         return [
             <PageButton handleClick={this.handlePageSelection} key={1} pageSelection={this.state.pageSelection} name={'Doc'}></PageButton>,
             <PageButton handleClick={this.handlePageSelection} key={2} pageSelection={this.state.pageSelection} name={'Stats'}></PageButton>,
-            <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'Sprint'}></PageButton>
+            <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'Sprint'}></PageButton>,
+            <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'x'}></PageButton>
         ]
     }
 
@@ -60,24 +115,65 @@ export default class DashBoard extends React.Component {
         }
     }
 
+    findNovel(title){
+        return this.state.novels.find(e => {
+           return e.title === title
+        })
+    }
 
+    generateView(){
+
+            if(this.state.selectedNovel === "+"){
+                return <NewNovelForm existingNovels={this.state.novels} submitNewNovel={this.submitNewNovel} ></NewNovelForm>
+            }
+
+        switch (this.state.pageSelection){
+            case "Doc":
+                return <DocShow chapters={this.state.chaptersToSend} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></DocShow>
+            case "Sprint":
+                return <Sprint sprintSubmitHandler={this.sprintSubmitHandler} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Sprint>
+            case "Stats" :
+                return <Stats novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Stats>
+            case "x" :
+                return <DeleteNovel deleteNovel={this.deleteNovel}></DeleteNovel>
+            default :
+            return <MissionStatement></MissionStatement>
+        }
+    }
+
+    generateStatement(){
+        return <a href="#url"  className="tabnav-tab">Select or Create a Novel</a>
+        }
+
+    checkState(){
+        switch(this.state.selectedNovel){
+            case "+":
+                return false
+            case "":
+                return false
+            default:
+                return true
+        }
+    }
 
 
     render(){
         return (
-            <div className="border d-flex flex-column">
-               <div className="tabnav">
-                <nav className="tabnav-tabs" aria-label="Foo bar">
+            <div className="d-flex flex-column mx-5">
+               <div className="tabnav d-flex mt-3">
+                <nav key={190} className="tabnav-tabs" aria-label="novels">
                     {this.generateNovelTags()}
                     {this.generateAddNovelTag()}
                 </nav>
                 </div>
-                <div className="tabnav">
-                <nav className="tabnav-tabs" aria-label="Foo bar">
-                    {this.generatePageTags()}
+                <div className="tabnav d-flex">
+                <nav key={192} className="tabnav-tabs" aria-label="pages">
+                    {this.checkState()? this.generatePageTags() : this.generateStatement()}
                 </nav>
                 </div>
-                <div className="p-5">View</div>
+                <div className="">
+                    {this.generateView()}
+                    </div>
             </div>
         )
     }

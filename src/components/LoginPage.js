@@ -1,6 +1,15 @@
 import React from 'react';
 import {Button, Box, Heading} from '@primer/components'
 import Fetcher from '../HOC/Fetcher.js'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams,
+  Redirect
+} from "react-router-dom";
 
 const INITIAL_STATE = {
     username: '',
@@ -18,18 +27,24 @@ constructor(){
         Fetcher.createUser(this.state)
         this.setState({
             username: "",
-            password: ""
+            password: "",
+            login: true
         })
     }
+
+  loginStateChanger = () => {
+    this.setState({
+      username: "",
+      password: "",
+      login: true
+  })
+  }
 
   
   login(e){
     e.preventDefault()
-    Fetcher.initialLogin(this.state)
-    this.setState({
-        username: "",
-        password: ""
-    })
+    Fetcher.initialLogin(this.state, this.loginStateChanger)
+  
   }
 
   handleChange(e){
@@ -41,40 +56,46 @@ constructor(){
   componentDidUpdate(){
       console.log(this.state)
   }
-  
-  checkFetch(e){
-  e.preventDefault()
-  fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('user')}/novels`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/json',
-        Accept: 'application/json'
-    }
-  })
-    .then(r => r.json())
-      .then(console.log)
-  }
 
-
-  checkLocalStorage(){
-    console.log(localStorage.getItem('user_id'))
-  }
   
 
     render(){
+      if(this.state.login) {
+        return <Redirect to={`/users/${localStorage.getItem('user_id')}/dashboard`}></Redirect>
+      }
         return (
-            <div>
-                <form>
-                <input onChange={e => this.handleChange(e)} className="form-control" type="text" name='username' placeholder='Username' value={this.state.username} aria-label="Default input"></input>
-                <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='password' placeholder='Password' value={this.state.password} aria-label="Default input"></input>
-                <Button onClick={e => this.login(e)}>login with jwt</Button>
-                </form>
-                <Button onClick={e => this.signup(e)}>make new user with salt</Button>
-                <Button onClick={e => this.checkFetch(e)}>check get request with jwt</Button>
-                <Button onClick={e => this.checkLocalStorage(e)}>checkLocalStorage</Button>
-                <Button onClick={e => Fetcher.logout()}>logout</Button>
-            </div>
+
+                <div className=" d-flex flex-column m-5" >
+                  <div className="Box">
+                      <div className="Box-header">
+                          <h1 className="Box-title">
+                            Welcome to Snap Draft
+
+                          </h1>
+                      </div>
+                      <div className="Box-body border-bottom-0">
+                      <form>
+                          <dl className="form-group">
+                              <dt><label htmlFor="example-text">Username</label></dt>
+                              <input onChange={e => this.handleChange(e)} className="form-control" type="text" name='username' placeholder='Username' value={this.state.username} aria-label="Default input"></input>
+
+                          </dl>
+
+                          <dl className="form-group">
+                              <dt><label htmlFor="example-textarea">Password</label></dt>
+                              <dd>
+                              <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='password' placeholder='Password' value={this.state.password} aria-label="Default input"></input>
+                              </dd>
+                          </dl>
+                          </form>
+                      </div>
+                      <div className="Box-footer border-top-0">
+                      <Button onClick={e => this.login(e)}>Log in</Button>
+                      <Button onClick={e => this.signup(e)}>New User</Button>
+                      </div>
+                    </div>
+                </div>
+           
         )
     }
 }

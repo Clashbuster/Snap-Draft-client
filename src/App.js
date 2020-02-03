@@ -32,7 +32,7 @@ render (){
     return (
       <div className="App">
         <Router>
-          <NavBar ></NavBar>
+          <NavBar></NavBar>
               <Switch>
                 <Route path="/login" render={() => <LoginPage></LoginPage>}>
                 </Route>

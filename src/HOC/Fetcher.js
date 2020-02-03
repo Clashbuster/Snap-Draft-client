@@ -1,7 +1,7 @@
 
 export default class Fetcher {
 
-    static initialLogin(credentials){
+    static initialLogin(credentials, handler){
         fetch('http://localhost:3000/api/v1/login', {
                     method: 'POST',
                     headers: {
@@ -19,6 +19,8 @@ export default class Fetcher {
                     localStorage.setItem('user', data.user.username)
                     localStorage.setItem('user_id', data.user.id)
                     localStorage.setItem('token', data.jwt)
+                    handler()
+                    
                     }
                 })
     }
@@ -71,5 +73,79 @@ export default class Fetcher {
     static logout(){
         localStorage.clear()
     }
+
+    static submitSprint(user, novel, text, chapterName = "", handler){
+        fetch(`http://localhost:3000/api/v1/users/${user}/submit-sprint`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                user: user,
+                novel: novel,
+                chapter: chapterName,
+                text : text
+            })
+          })
+            .then(r => r.json())
+            .then(data => {
+                handler(data)
+
+            })
+    }
+
+    static getChapters(user, novel, handler){
+        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}`, {
+            method: 'GET',
+            headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
+        })
+            .then(r => r.json())
+            .then(data => {
+                handler(data)
+            })
+    }
+
+
+    static postNewNovel(user, novelObj, handler){
+        fetch(`http://localhost:3000/api/v1/users/${user}/submit-novel`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(novelObj)
+          })
+            .then(r => r.json())
+            .then(data => {
+                handler(data)
+
+            })
+    }
+
+
+    static deleteNovel(user, novel, handler){
+        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}`, {
+            method: 'DELETE',
+            headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
+        })
+            .then(r => r.json())
+            .then(data => {
+                console.log(data, "deletion from backend")
+                handler()
+            })
+    }
+
+
    
 }

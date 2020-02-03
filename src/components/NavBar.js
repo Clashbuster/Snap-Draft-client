@@ -12,11 +12,14 @@ import {
 
 export default class NavBar extends React.Component {
 
-
+    userId(){
+        let output = localStorage.getItem('user_id')
+        return output
+    }
 
     render(){
         return (
-            <div className="Header">
+            <div className="Header position-sticky top-0">
                 <div className="Header-item flex-1">
                     Snap Draft
                 </div>
@@ -24,10 +27,7 @@ export default class NavBar extends React.Component {
                     <Link to='/mission-statement'>About</Link>
                 </div>
                 <div className="Header-item">
-                    <Link to='/login'>Login</Link>
-                </div>
-                <div className="Header-item">
-                    <Link to={`/users/${localStorage.getItem('user_id')}/dashboard`}>DashBoard</Link>
+                    <Link to='/login'>Logout</Link>
                 </div>
             </div>
         )
