@@ -3,6 +3,8 @@ import Fetcher from '../HOC/Fetcher';
 import ChapterCard from './ChapterCard.js'
 import Blank from '../HOC/Blank.js'
 
+import { Link as Slink, animateScroll as scroll } from "react-scroll";
+
 
 
 export default class DocShow extends React.Component {
@@ -15,7 +17,7 @@ export default class DocShow extends React.Component {
     displayChapters(){
         if (this.props.chapters[0]){
             return this.props.chapters.map((item, index) => {
-                return <ChapterCard chapterDetails={item} key={index}></ChapterCard>
+                return <ChapterCard scrollLink={`chapter${index}`} chapterDetails={item} key={index}></ChapterCard>
             })
         } else {
             return ""
@@ -31,7 +33,7 @@ export default class DocShow extends React.Component {
     displayIndex(){
         if (this.props.chapters[0]){
             return this.props.chapters.map((item, index) => {
-                return <a key={index} className="menu-item text-left" href="#url">{item.title}</a>
+                return <Slink offset={-60}  duration= {500} smooth={true} to={`chapter${index}`}  key={index} className="menu-item text-left" href="#url">{item.title}</Slink>
             })
         } else {
             return <Blank></Blank>

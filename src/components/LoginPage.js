@@ -24,12 +24,7 @@ constructor(){
 
     signup(e){
         e.preventDefault()
-        Fetcher.createUser(this.state)
-        this.setState({
-            username: "",
-            password: "",
-            login: true
-        })
+        Fetcher.createUser(this.state, this.loginStateChanger)
     }
 
   loginStateChanger = () => {
@@ -37,6 +32,8 @@ constructor(){
       username: "",
       password: "",
       login: true
+  }, () => {
+    this.props.changePageState('Dash')
   })
   }
 

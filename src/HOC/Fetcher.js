@@ -25,7 +25,7 @@ export default class Fetcher {
                 })
     }
 
-    static createUser(credentials){
+    static createUser(credentials, handler){
         fetch('http://localhost:3000/api/v1/users', {
             method: 'POST',
             headers: {
@@ -43,6 +43,7 @@ export default class Fetcher {
                     localStorage.setItem('user', data.user.username)
                     localStorage.setItem('user_id', data.user.id)
                     localStorage.setItem('token', data.jwt)
+                    handler()
                     }
             })
     }
@@ -63,8 +64,12 @@ export default class Fetcher {
         }
 
     static checkLogin(id){
-        if(localStorage.getItem('token') !== ""  && localStorage.getItem('user_id') === id){
-            return true
+        if(localStorage.getItem('token') !== null){
+            if(localStorage.getItem('user_id') === id){
+                    return true
+                }else {
+                return false
+            }
         } else {
             return false
         }

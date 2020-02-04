@@ -23,7 +23,34 @@ import PrivateRoute from './HOC/PrivateRoute.js'
 
 
 class App extends React.Component {
+constructor(){
+  super()
+  this.state ={
+    page: "",
+    loggedin: null
+  }
+  this.changePageState('login')
+}
 
+changePageState = (page) => {
+  if(Fetcher.checkLogin(localStorage.getItem('user_id'))){
+    this.setState({
+      page : page,
+      loggedin: true
+    })
+  } else {
+    this.setState({
+      page : page,
+      loggedin : false
+    })
+  }
+}
+
+
+
+componentDidUpdate(){
+  console.log(this.state)
+}
 
 
 
@@ -32,15 +59,15 @@ render (){
     return (
       <div className="App">
         <Router>
-          <NavBar></NavBar>
+          <NavBar loggedin={this.state.loggedin} currentPage={this.state.page} changePageState={this.changePageState}></NavBar>
               <Switch>
-                <Route path="/login" render={() => <LoginPage></LoginPage>}>
+                <Route path="/login" render={() => <LoginPage changePageState={this.changePageState}></LoginPage>}>
                 </Route>
 
                 <Route path="/mission-statement" render={(props) => <MissionStatement {...props} ></MissionStatement>}>
                 </Route>
 
-                <PrivateRoute  path="/users/:id/dashboard" component={DashBoard}></PrivateRoute>
+                <PrivateRoute changePageState={this.changePageState}  path="/users/:id/dashboard" component={DashBoard}></PrivateRoute>
               </Switch>
         </Router>
       </div>

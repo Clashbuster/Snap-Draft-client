@@ -84,7 +84,9 @@ export default class DashBoard extends React.Component {
 
     handlePageSelection = (e, selection) => {
         e.preventDefault()
-        this.setState({pageSelection: selection})
+        this.setState({pageSelection: selection}, () => {
+            this.props.changePageState(selection)
+        })
     }
 
     generateNovelTags(){
@@ -98,7 +100,7 @@ export default class DashBoard extends React.Component {
             <PageButton handleClick={this.handlePageSelection} key={1} pageSelection={this.state.pageSelection} name={'Doc'}></PageButton>,
             <PageButton handleClick={this.handlePageSelection} key={2} pageSelection={this.state.pageSelection} name={'Stats'}></PageButton>,
             <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'Sprint'}></PageButton>,
-            <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'x'}></PageButton>
+            <PageButton handleClick={this.handlePageSelection} key={4} pageSelection={this.state.pageSelection} name={'x'}></PageButton>
         ]
     }
 
