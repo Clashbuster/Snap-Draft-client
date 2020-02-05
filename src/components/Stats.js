@@ -68,20 +68,14 @@ export default class Stats extends React.Component {
                         <div className="flex-auto">
                         <strong>Average Word Length</strong>
                         </div>
-                        <strong>{this.props.data.AVGWordLength}</strong>
+                        <strong>{this.props.data.avgWordLength}</strong>
                     </div>
                     <div className="Box-row d-flex flex-items-center">
                         <div className="flex-auto">
                         <strong>Unique Words</strong>
                         </div>
                         <strong>{this.props.data.numberOfUniqueWords}</strong>
-                    </div>
-                    <div className="Box-row d-flex flex-items-center">
-                        <div className="flex-auto">
-                        <strong>Most Used Word</strong>
-                        </div>
-                        <strong>{this.props.data.mostUsed}</strong>
-                    </div>  
+                    </div> 
                 </div>
                 <WordCountSVG data={this.props.data.wordList}></WordCountSVG>
             </div>

@@ -24,21 +24,13 @@ export default class DashBoard extends React.Component {
             novelToSend: {},
             chaptersToSend: [],
             statsData : {
-                wordCount : null,
+                wordCount : "",
                 longestWord : "",
-                AVGWordLength : "",
-                numberOfUniqueWords : null,
-                mostUsed: "",
+                avgWordLength : "",
+                numberOfUniqueWords : "",
                 wordList: {
                     words : [],
-                    // chapter1 : {
-                    //     label: "chapter 1",
-                    //     data: [12,23]
-                    // },
-                    // chapter2 : {
-                    //     label: "chapter 2",
-                    //     data: [12,23]
-                    // }  
+                    chapters : [] 
                 }
             }
         }

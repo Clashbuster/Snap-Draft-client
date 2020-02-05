@@ -127,8 +127,7 @@ export default class Fetcher {
         })
             .then(r => r.json())
             .then(data => {
-                console.log(data)
-                // handler(data)
+                handler(data)
             })
     }
 
@@ -145,6 +144,7 @@ export default class Fetcher {
           })
             .then(r => r.json())
             .then(data => {
+                // console.log(data)
                 handler(data)
 
             })
