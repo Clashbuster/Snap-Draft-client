@@ -127,6 +127,7 @@ export default class Fetcher {
         })
             .then(r => r.json())
             .then(data => {
+                console.log('hello from stats fetcher')
                 handler(data)
             })
     }

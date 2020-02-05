@@ -50,7 +50,8 @@ export default class DashBoard extends React.Component {
 
 
     sprintSubmitHandler = (data) => {
-        console.log(data, 'sprint submitted')
+        Fetcher.getStats(localStorage.getItem('user'), this.state.selectedNovel, this.updateStats)
+
         this.setState({chaptersToSend: data})
     }
 

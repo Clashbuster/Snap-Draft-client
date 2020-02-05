@@ -1,14 +1,18 @@
 import React from 'react';
 import Chart from "chart.js";
+import Blank from '../HOC/Blank.js'
 
 
 export default class WordCountSVG extends React.Component {
+
     chartRef = React.createRef();
+    
+
     
     componentDidMount() {
         const myChartRef = this.chartRef.current.getContext("2d");
         
-        new Chart(myChartRef, {
+        let chart = new Chart(myChartRef, {
             type: 'horizontalBar',
             data: {
                 //Bring in data
@@ -35,10 +39,26 @@ export default class WordCountSVG extends React.Component {
         });
     }
 
+    noStatsCheck(){
+        if(this.props.data.words[0]){
+            // sthis.defineChart()
+            return (
+                <canvas
+                    height={this.determineHeight()}
+                    id="myChart"
+                    ref={this.chartRef}
+                />
+            )
+        } else {
+            return <Blank></Blank>
+        }
+    }
+
     determineHeight(){
+
         let height = this.props.data.words.length * 5
         if(height > 30000){
-            height = 10000
+            height = 8000
         }
         return height
     }
@@ -46,15 +66,13 @@ export default class WordCountSVG extends React.Component {
     render() {
         return (
             <div className={"Box"}>
-                <canvas
+                 <canvas
                     height={this.determineHeight()}
                     id="myChart"
                     ref={this.chartRef}
                 />
             </div>
         )
-    }
-
-
 
     }
+}
