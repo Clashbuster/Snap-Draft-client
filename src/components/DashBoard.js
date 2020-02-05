@@ -13,6 +13,7 @@ import Blank from '../HOC/Blank.js'
 
 
 
+
 export default class DashBoard extends React.Component {
     constructor(props){
         super(props)
@@ -21,7 +22,25 @@ export default class DashBoard extends React.Component {
             selectedNovel : "",
             pageSelection : "",
             novelToSend: {},
-            chaptersToSend: []
+            chaptersToSend: [],
+            statsData : {
+                wordCount : null,
+                longestWord : "",
+                AVGWordLength : "",
+                numberOfUniqueWords : null,
+                mostUsed: "",
+                wordList: {
+                    words : [],
+                    // chapter1 : {
+                    //     label: "chapter 1",
+                    //     data: [12,23]
+                    // },
+                    // chapter2 : {
+                    //     label: "chapter 2",
+                    //     data: [12,23]
+                    // }  
+                }
+            }
         }
         this.getNovels()
     }
@@ -66,14 +85,18 @@ export default class DashBoard extends React.Component {
         console.log(this.state)
     }
 
-    updateChapters= (data)=>{
+    updateChapters = (data)=>{
         this.setState({chaptersToSend : data })
+    }
+
+    updateStats = (data)=> {
+        this.setState({statsData : data})
     }
 
     handleNovelClick = (e, title) => {
         e.preventDefault()
-
         Fetcher.getChapters(localStorage.getItem('user'), title, this.updateChapters)
+        Fetcher.getStats(localStorage.getItem('user'), title, this.updateStats)
 
         this.setState({
             selectedNovel: title,
@@ -135,7 +158,7 @@ export default class DashBoard extends React.Component {
             case "Sprint":
                 return <Sprint sprintSubmitHandler={this.sprintSubmitHandler} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Sprint>
             case "Stats" :
-                return <Stats novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Stats>
+                return <Stats data={this.state.statsData} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Stats>
             case "x" :
                 return <DeleteNovel deleteNovel={this.deleteNovel}></DeleteNovel>
             default :

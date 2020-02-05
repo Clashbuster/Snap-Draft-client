@@ -16,7 +16,7 @@ import Fetcher from './Fetcher';
 const PrivateRoute = ({component: Component, ...rest}) => {
 
 
-console.log(rest)
+// console.log(rest)
 
 
 

@@ -116,6 +116,22 @@ export default class Fetcher {
             })
     }
 
+    static getStats(user, novel, handler){
+        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}/stats`, {
+            method: 'GET',
+            headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
+        })
+            .then(r => r.json())
+            .then(data => {
+                console.log(data)
+                // handler(data)
+            })
+    }
+
 
     static postNewNovel(user, novelObj, handler){
         fetch(`http://localhost:3000/api/v1/users/${user}/submit-novel`, {
