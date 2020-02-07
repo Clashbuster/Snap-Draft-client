@@ -95,7 +95,6 @@ export default class DashBoard extends React.Component {
             selectedNovel: title,
             novelToSend: this.findNovel(title)
         })
-
     }
 
     handlePageSelection = (e, selection) => {
@@ -122,7 +121,6 @@ export default class DashBoard extends React.Component {
 
     addNewNovel(e){
         this.setState({selectedNovel: "+"})
-        console.log('hello')
     }
 
     generateAddNovelTag(){

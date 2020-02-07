@@ -5,7 +5,16 @@ import Blank from '../HOC/Blank.js'
 
 export default class WordCountSVG extends React.Component {
 
+    constructor(){
+        super()
+        this.state = {
+            chart : {}
+        }
+    }
+
     chartRef = React.createRef();
+
+    
     
 
     
@@ -13,7 +22,7 @@ export default class WordCountSVG extends React.Component {
         const myChartRef = this.chartRef.current.getContext("2d");
         
         let chart = new Chart(myChartRef, {
-            type: 'horizontalBar',
+            type: 'bar',
             data: {
                 //Bring in data
                 labels: this.props.data.words,
@@ -27,24 +36,45 @@ export default class WordCountSVG extends React.Component {
                     yAxes: [{
                         stacked: true
                     }]
-                },
-                animation: {
-                    duration: 0 // general animation time
-                },
-                hover: {
-                    animationDuration: 0 // duration of animations when hovering an item
-                },
-                responsiveAnimationDuration: 0 
+                }
             }
         });
+
+        this.setState({
+            chart : chart
+        })
     }
+
+    componentDidUpdate(){
+        // const myChartRef = this.chartRef.current.getContext("2d");
+        this.removeData(this.state.chart)
+        this.addData(this.state.chart, this.props.data.words, this.props.data.chapters)
+    }
+
+    
+        addData(chart, label, data) {
+            chart.data.labels = label;
+            chart.data.datasets = data;
+            chart.update();
+        }
+        
+        removeData(chart) {
+            chart.data.labels.pop();
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.pop();
+            });
+            chart.update();
+        }
+    
+
+   
 
     noStatsCheck(){
         if(this.props.data.words[0]){
             // sthis.defineChart()
             return (
                 <canvas
-                    height={this.determineHeight()}
+                    height={500}
                     id="myChart"
                     ref={this.chartRef}
                 />
@@ -65,9 +95,9 @@ export default class WordCountSVG extends React.Component {
 
     render() {
         return (
-            <div className={"Box"}>
+            <div className={"Box border-0"}>
                  <canvas
-                    height={this.determineHeight()}
+                    height={90}
                     id="myChart"
                     ref={this.chartRef}
                 />
