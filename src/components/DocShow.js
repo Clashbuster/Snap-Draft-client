@@ -66,16 +66,6 @@ export default class DocShow extends React.Component {
             }), new TextRun(`By: ${localStorage.getItem('user')}`)],
         })
 
-        // doc.addSection({
-        //     headers: {
-        //         default: new Header({
-        //             children: [
-        //                 new Paragraph(PageNumber.CURRENT + " of " + PageNumber.TOTAL_PAGES),
-        //             ],
-        //         }),
-        //     }
-        // });
-
 
         doc.addSection({
             headers: {
