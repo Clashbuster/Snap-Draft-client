@@ -63,9 +63,9 @@ export default class Fetcher {
             })
         }
 
-    static checkLogin(id){
+    static checkLogin(username){
         if(localStorage.getItem('token') !== null){
-            if(localStorage.getItem('user_id') === id){
+            if(localStorage.getItem('user') === username){
                     return true
                 }else {
                 return false

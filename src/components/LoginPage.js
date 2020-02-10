@@ -58,7 +58,7 @@ constructor(){
 
     render(){
       if(this.state.login) {
-        return <Redirect to={`/users/${localStorage.getItem('user_id')}/dashboard`}></Redirect>
+        return <Redirect to={`/users/${localStorage.getItem('user')}/dashboard`}></Redirect>
       }
         return (
 

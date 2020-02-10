@@ -45,9 +45,13 @@ export default class NavBar extends React.Component {
     render(){
         return (
             <div className="Header position-sticky top-0">
+                <div className="Header-item">
+                    <img height="30" width="30"className="logo" src={require('../snapdraft-logo.png')} alt="Smiley face" ></img>
+                </div>
                 <div className="Header-item flex-1">
                     Snap Draft
                 </div>
+               
                         <div className="Header-item">
                             <Link onClick={e => this.props.changePageState("About")} to='/mission-statement'>About</Link>
                         </div>

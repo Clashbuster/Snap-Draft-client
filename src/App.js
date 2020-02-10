@@ -33,7 +33,7 @@ constructor(){
 }
 
 changePageState = (page) => {
-  if(Fetcher.checkLogin(localStorage.getItem('user_id'))){
+  if(Fetcher.checkLogin(localStorage.getItem('user'))){
     this.setState({
       page : page,
       loggedin: true
@@ -67,7 +67,10 @@ render (){
                 <Route path="/mission-statement" render={(props) => <MissionStatement {...props} ></MissionStatement>}>
                 </Route>
 
-                <PrivateRoute changePageState={this.changePageState}  path="/users/:id/dashboard" component={DashBoard}></PrivateRoute>
+                <PrivateRoute changePageState={this.changePageState}  path="/users/:username/dashboard" component={DashBoard}></PrivateRoute>
+                  
+                  <Route path="/" render={() => <LoginPage changePageState={this.changePageState}></LoginPage>}>
+                </Route>
               </Switch>
         </Router>
       </div>

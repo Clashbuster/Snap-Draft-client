@@ -20,7 +20,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
 
 
-return <Route {...rest} render={props => (Fetcher.checkLogin(rest.computedMatch.params.id)? <Component {...props} {...rest} ></Component> : <Redirect to='/login'></Redirect>)} />
+return <Route {...rest} render={props => (Fetcher.checkLogin(rest.computedMatch.params.username)? <Component {...props} {...rest} ></Component> : <Redirect to='/login'></Redirect>)} />
 
 }
 
