@@ -14,10 +14,10 @@ import {
 
 export default class NavBar extends React.Component {
 
-    displayLogoutNav(){
+    displayLogoutNav(linkText){
         return (
             <div className="Header-item">
-                <Link onClick={e => this.handlelogout()} to='/login'>Log Out</Link>
+                <Link onClick={e => this.handlelogout()} to='/login'>{linkText}</Link>
             </div>
         )
     }
@@ -34,6 +34,22 @@ export default class NavBar extends React.Component {
         e.preventDefault()
         scroll.scrollToTop()
     }
+
+    checkLogoutAbout(){
+        let output = false
+        let checker = 0
+        if(this.props.loggedin === false){
+            checker += 1
+        }
+        if (this.props.currentPage === "About"){
+            checker += 1
+        }
+        if(checker === 2){
+            output = true
+        }
+        return output
+    }
+
    
     
 
@@ -55,8 +71,9 @@ export default class NavBar extends React.Component {
                         <div className="Header-item">
                             <Link onClick={e => this.props.changePageState("About")} to='/mission-statement'>About</Link>
                         </div>
-                       {this.props.loggedin ? this.displayLogoutNav() : null}
+                       {this.props.loggedin ? this.displayLogoutNav("Log out") : null}
                        {this.props.currentPage === "Doc" ? this.displayTopScroll() : null}
+                       {this.checkLogoutAbout() ? this.displayLogoutNav("Log in") : null }
             </div>
         )
     }

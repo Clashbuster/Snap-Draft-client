@@ -1,12 +1,13 @@
 
 const herokuURL = 'https://snapdraft.herokuapp.com/api/v1'
+// const localURL =  'http://localhost:3000/api/v1'
 
-const localURL =  'http://localhost:3000/api/v1'
+// const herokuURL = localURL
 
 export default class Fetcher {
 
-    static initialLogin(credentials, handler){
-        fetch(`https://snapdraft.herokuapp.com/api/v1/login`, {
+    static initialLogin(credentials, handler, errorhandler){
+        fetch(`${herokuURL}/login`, {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json',
@@ -24,13 +25,14 @@ export default class Fetcher {
                     localStorage.setItem('user_id', data.user.id)
                     localStorage.setItem('token', data.jwt)
                     handler()
-                    
+                    } else {
+                        errorhandler(data.message)
                     }
                 })
     }
 
-    static createUser(credentials, handler){
-        fetch(`https://snapdraft.herokuapp.com/api/v1/users`, {
+    static createUser(credentials, handler, errorhandler){
+        fetch(`${herokuURL}/users`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -48,6 +50,8 @@ export default class Fetcher {
                     localStorage.setItem('user_id', data.user.id)
                     localStorage.setItem('token', data.jwt)
                     handler()
+                    } else {
+                        errorhandler(data.error)
                     }
             })
     }
@@ -132,7 +136,7 @@ export default class Fetcher {
         })
             .then(r => r.json())
             .then(data => {
-                console.log('hello from stats fetcher')
+                // console.log('hello from stats fetcher')
                 handler(data)
             })
     }
@@ -155,6 +159,26 @@ export default class Fetcher {
 
             })
     }
+
+    static updateNovel(user, novelObj, handler){
+        fetch(`${herokuURL}/users/${user}/update-novel`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(novelObj)
+          })
+            .then(r => r.json())
+            .then(data => {
+                // console.log(data)
+                handler(data)
+
+            })
+    }
+
+
 
 
     static deleteNovel(user, novel, handler){

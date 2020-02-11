@@ -41,6 +41,13 @@ export default class DashBoard extends React.Component {
         this.props.changePageState('Dash') 
     }
 
+    updateNovelToSend = (data) => {
+        this.setState({novelToSend: data})
+        this.getNovels()
+    }
+
+
+
     deleteNovel = () => {
         // console.log("deleting", this.state.selectedNovel)
         Fetcher.deleteNovel(localStorage.getItem('user'), this.state.selectedNovel, this.finalizeDeletion)
@@ -155,7 +162,7 @@ export default class DashBoard extends React.Component {
             case "Stats" :
                 return <Stats data={this.state.statsData} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Stats>
             case "x" :
-                return <DeleteNovel deleteNovel={this.deleteNovel}></DeleteNovel>
+                return <DeleteNovel updateNovelToSend={this.updateNovelToSend} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel} deleteNovel={this.deleteNovel}></DeleteNovel>
             default :
             return <MissionStatement></MissionStatement>
         }

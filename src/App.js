@@ -26,10 +26,10 @@ class App extends React.Component {
 constructor(){
   super()
   this.state ={
-    page: "",
-    loggedin: null
+    page: "login",
+    loggedin: false
   }
-  this.changePageState('login')
+  // this.changePageState('login')
 }
 
 changePageState = (page) => {
