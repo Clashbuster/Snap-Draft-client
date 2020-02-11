@@ -37,6 +37,10 @@ export default class DashBoard extends React.Component {
         this.getNovels()
     }
 
+    componentDidMount(){
+        this.props.changePageState('Dash') 
+    }
+
     deleteNovel = () => {
         // console.log("deleting", this.state.selectedNovel)
         Fetcher.deleteNovel(localStorage.getItem('user'), this.state.selectedNovel, this.finalizeDeletion)

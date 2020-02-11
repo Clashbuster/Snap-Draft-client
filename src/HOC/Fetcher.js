@@ -1,8 +1,12 @@
 
+const herokuURL = 'https://snapdraft.herokuapp.com/api/v1'
+
+const localURL =  'http://localhost:3000/api/v1'
+
 export default class Fetcher {
 
     static initialLogin(credentials, handler){
-        fetch('http://localhost:3000/api/v1/login', {
+        fetch(`https://snapdraft.herokuapp.com/api/v1/login`, {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json',
@@ -26,7 +30,7 @@ export default class Fetcher {
     }
 
     static createUser(credentials, handler){
-        fetch('http://localhost:3000/api/v1/users', {
+        fetch(`https://snapdraft.herokuapp.com/api/v1/users`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -49,7 +53,7 @@ export default class Fetcher {
     }
 
     static getNovels(user, handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/novels`, {
+        fetch(`${herokuURL}/users/${user}/novels`, {
             method: 'GET',
             headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -59,6 +63,7 @@ export default class Fetcher {
         })
             .then(r => r.json())
             .then(data => {
+                console.log(data)
                 handler(data)
             })
         }
@@ -80,7 +85,7 @@ export default class Fetcher {
     }
 
     static submitSprint(user, novel, text, chapterName = "", handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/submit-sprint`, {
+        fetch(`${herokuURL}/users/${user}/submit-sprint`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -102,7 +107,7 @@ export default class Fetcher {
     }
 
     static getChapters(user, novel, handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}`, {
+        fetch(`${herokuURL}/users/${user}/${novel}`, {
             method: 'GET',
             headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -117,7 +122,7 @@ export default class Fetcher {
     }
 
     static getStats(user, novel, handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}/stats`, {
+        fetch(`${herokuURL}/users/${user}/${novel}/stats`, {
             method: 'GET',
             headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -134,7 +139,7 @@ export default class Fetcher {
 
 
     static postNewNovel(user, novelObj, handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/submit-novel`, {
+        fetch(`${herokuURL}/users/${user}/submit-novel`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -153,7 +158,7 @@ export default class Fetcher {
 
 
     static deleteNovel(user, novel, handler){
-        fetch(`http://localhost:3000/api/v1/users/${user}/${novel}`, {
+        fetch(`${herokuURL}/users/${user}/${novel}`, {
             method: 'DELETE',
             headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
