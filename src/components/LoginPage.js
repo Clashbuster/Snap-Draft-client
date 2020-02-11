@@ -13,7 +13,8 @@ import {
 
 const INITIAL_STATE = {
     username: '',
-    password: ''
+    password: '',
+    error: ""
 }
 
 export default class LoginPage extends React.Component {
@@ -24,10 +25,10 @@ constructor(){
 
     signup(e){
         e.preventDefault()
-        Fetcher.createUser(this.state, this.loginStateChanger)
+        Fetcher.createUser(this.state, this.loginStateChanger, this.errorhandler)
     }
 
-  loginStateChanger = () => {
+  loginStateChanger = (error) => {
     this.setState({
       username: "",
       password: "",
@@ -37,11 +38,16 @@ constructor(){
   })
   }
 
+  errorhandler = (error) => {
+    this.setState({
+      error: error
+    })
+  }
+
   
   login(e){
     e.preventDefault()
-    Fetcher.initialLogin(this.state, this.loginStateChanger)
-  
+    Fetcher.initialLogin(this.state, this.loginStateChanger, this.errorhandler)
   }
 
   handleChange(e){

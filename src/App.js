@@ -69,7 +69,7 @@ render (){
 
                 <PrivateRoute changePageState={this.changePageState}  path="/users/:username/dashboard" component={DashBoard}></PrivateRoute>
                   
-                  <Route path="/" render={() => <LoginPage changePageState={this.changePageState}></LoginPage>}>
+                  <Route path="/" ><Redirect to="/login"></Redirect>>
                 </Route>
               </Switch>
         </Router>
