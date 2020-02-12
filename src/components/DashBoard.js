@@ -9,6 +9,7 @@ import MissionStatement from "./MissionStatement.js"
 import DeleteNovel from "./DeleteNovel.js"
 import NewNovelForm from "./NewNovelForm.js"
 import Blank from '../HOC/Blank.js'
+import Octicon, {Plus, X} from '@primer/octicons-react'
 
 
 
@@ -126,7 +127,7 @@ export default class DashBoard extends React.Component {
             <PageButton handleClick={this.handlePageSelection} key={1} pageSelection={this.state.pageSelection} name={'Doc'}></PageButton>,
             <PageButton handleClick={this.handlePageSelection} key={2} pageSelection={this.state.pageSelection} name={'Stats'}></PageButton>,
             <PageButton handleClick={this.handlePageSelection} key={3} pageSelection={this.state.pageSelection} name={'Sprint'}></PageButton>,
-            <PageButton handleClick={this.handlePageSelection} key={4} pageSelection={this.state.pageSelection} name={'x'}></PageButton>
+            <PageButton handleClick={this.handlePageSelection} key={4} pageSelection={this.state.pageSelection} octicon={<Octicon icon={X}/>} name={'x'}></PageButton>
         ]
     }
 
@@ -136,9 +137,9 @@ export default class DashBoard extends React.Component {
 
     generateAddNovelTag(){
         if(this.state.selectedNovel === "+") {
-            return <a onClick={e => this.addNewNovel(e)} href="#url" aria-current="page"  className="tabnav-tab">+</a>
+            return <a onClick={e => this.addNewNovel(e)} href="#url" aria-current="page"  className="tabnav-tab"><Octicon icon={Plus}/></a>
         } else {
-            return <a onClick={e => this.addNewNovel(e)} href="#url"  className="tabnav-tab">+</a>
+            return <a onClick={e => this.addNewNovel(e)} href="#url"  className="tabnav-tab"><Octicon icon={Plus}/></a>
         }
     }
 
@@ -158,7 +159,7 @@ export default class DashBoard extends React.Component {
             case "Doc":
                 return <DocShow chapters={this.state.chaptersToSend} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></DocShow>
             case "Sprint":
-                return <Sprint sprintSubmitHandler={this.sprintSubmitHandler} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Sprint>
+                return <Sprint chapters={this.state.chaptersToSend} sprintSubmitHandler={this.sprintSubmitHandler} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Sprint>
             case "Stats" :
                 return <Stats data={this.state.statsData} novelInfo={this.state.novelToSend} selectedNovel={this.state.selectedNovel}></Stats>
             case "x" :

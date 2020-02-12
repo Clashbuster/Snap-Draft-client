@@ -45,10 +45,24 @@ export default class Sprint extends React.Component {
                     chapterTitle : "",
                     sprintIncrement : this.props.novelInfo.sprint_increment,
                     sprintContent : "",
-                    submitText: "Submit"       
+                    submitText: "Submit"   
                 
             })
         }
+    }
+
+    buttonColor(){
+        if(this.state.submitText === "Submit"){
+            return "btn"
+        } else if (this.state.submitText === "Confirm"){
+            return "btn btn-primary"
+        }
+    }
+
+    showChapters(){
+        return this.props.chapters.map((item, index) => {
+            return <option key={index}>{item.title}</option>
+        })
     }
 
     render(){
@@ -61,6 +75,12 @@ export default class Sprint extends React.Component {
                         </h1>
                     </div>
                     <div className="Box-body">
+
+                    <select onChange={e => this.handleChange(e)} className="form-select" name="chapterTitle" aria-label="Preference">
+                        <option>Select Recipient</option>
+                        {this.showChapters()}
+                    </select>
+
                     <form>
                         <dl className="form-group">
                             <dt><label htmlFor="example-text">Start New Chapter (Optional)</label></dt>
@@ -76,7 +96,7 @@ export default class Sprint extends React.Component {
                         </form>
                     </div>
                     <div className="Box-footer">
-                        <button onClick={e => this.handleSubmit(e)} className="btn" type="button">{this.state.submitText}</button>
+                        <button onClick={e => this.handleSubmit(e)} className={this.buttonColor()} type="button">{this.state.submitText}</button>
                     </div>
                     </div>
                 </div>

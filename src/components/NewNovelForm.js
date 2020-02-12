@@ -109,7 +109,7 @@ export default class Stats extends React.Component {
                     </dl>
 
                     <dl className="form-group">
-                    <dt><label htmlFor="example-text">First Chapter Title</label></dt>
+                    <dt><label htmlFor="example-text">First Chapter Title (Optional)</label></dt>
                         <dd><input onChange={e=>this.handleChange(e)} className="form-control" type="text"  placeholder="Chapter Title" name="chapterTitle" value={this.state.chapterTitle} /></dd>
                     </dl>
                     </form>
