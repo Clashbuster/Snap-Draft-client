@@ -1,8 +1,9 @@
 
-// const herokuURL = 'https://snapdraft.herokuapp.com/api/v1'
-const localURL =  'http://localhost:3000/api/v1'
+const herokuURL = 'https://snapdraft.herokuapp.com/api/v1'
 
-const herokuURL = localURL
+
+// const localURL =  'http://localhost:3000/api/v1'
+// const herokuURL = localURL
 
 export default class Fetcher {
 
