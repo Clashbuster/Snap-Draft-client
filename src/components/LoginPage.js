@@ -172,8 +172,8 @@ displayCredentialsForm(){
                 </div>
 
                 <div className="Subhead">
-                    <div className="Subhead-heading border-bottom-0 d-flex">The worlds greatest novel drafting platform</div>
-              <div className="Subhead-actions"><a onClick={e => this.handleNewUserChange(e)} href="#url">{this.displayLoginLink()}</a></div>
+                    <div className="Subhead-heading border-bottom-0 d-flex">The world's greatest novel drafting platform</div>
+                <div className="Subhead-actions"><a onClick={e => this.handleNewUserChange(e)} href="#url">{this.displayLoginLink()}</a></div>
                 </div>
                       
 
