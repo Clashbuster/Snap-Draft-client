@@ -14,7 +14,9 @@ import {
 const INITIAL_STATE = {
     username: '',
     password: '',
-    error: ""
+    checkpassword: '',
+    error: "",
+    newUser: false
 }
 
 export default class LoginPage extends React.Component {
@@ -23,9 +25,17 @@ constructor(){
     this.state = INITIAL_STATE
 }
 
+
     signup(e){
         e.preventDefault()
-        Fetcher.createUser(this.state, this.loginStateChanger, this.errorhandler)
+        if(this.state.password === this.state.checkpassword){
+          Fetcher.createUser(this.state, this.loginStateChanger, this.errorhandler)
+
+        } else {
+          this.setState({
+            error: "Passwords do not match"
+          })
+        }
     }
 
   loginStateChanger = (error) => {
@@ -70,6 +80,80 @@ constructor(){
     )
 }
 
+handleNewUserChange(e){
+  e.preventDefault()
+  this.setState(prev => {
+    let answer = !prev.newUser
+    return {
+      newUser: answer
+    }
+  })
+}
+
+displayLoginLink(){
+  if(this.state.newUser === true){
+    return "Already a member"
+  } else {
+    return "New user"
+  }
+}
+
+displayCredentialsForm(){
+  if(this.state.newUser === true){
+    return (
+      <>
+        <form>
+        <dl className="form-group">
+            <dt><label htmlFor="example-text">Username</label></dt>
+            <input onChange={e => this.handleChange(e)} className="form-control" type="text" name='username' placeholder='Username' value={this.state.username} aria-label="Default input"></input>
+
+        </dl>
+
+        <dl className="form-group">
+            <dt><label htmlFor="example-textarea">Password</label></dt>
+            <dd>
+            <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='password' placeholder='Password' value={this.state.password} aria-label="Default input"></input>
+            </dd>
+        </dl>
+        <dl className="form-group">
+            <dt><label htmlFor="example-textarea">Confirm Password</label></dt>
+            <dd>
+            <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='checkpassword' placeholder='Confirm Password' value={this.state.checkpassword} aria-label="Default input"></input>
+            </dd>
+        </dl>
+        </form>
+              <div className="Box-footer border-top-0">
+            <Button onClick={e => this.signup(e)}>Sign up</Button>
+          </div>
+      </>
+    )
+  } else {
+    return (
+      <>
+      <form>
+      <dl className="form-group">
+          <dt><label htmlFor="example-text">Username</label></dt>
+          <input onChange={e => this.handleChange(e)} className="form-control" type="text" name='username' placeholder='Username' value={this.state.username} aria-label="Default input"></input>
+
+      </dl>
+
+      <dl className="form-group">
+          <dt><label htmlFor="example-textarea">Password</label></dt>
+          <dd>
+          <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='password' placeholder='Password' value={this.state.password} aria-label="Default input"></input>
+          </dd>
+      </dl>
+      </form>
+      <div className="Box-footer border-top-0">
+      <Button onClick={e => this.login(e)}>Log in</Button>
+      </div>
+    </>
+    )
+  }
+}
+
+
+
   componentDidUpdate(){
       console.log(this.state)
   }
@@ -83,34 +167,19 @@ constructor(){
         return (
 
                 <div className=" d-flex flex-column m-5" >
-                  <div className="Box">
-                      <div className="Box-header">
-                          <h1 className="Box-title">
-                            Welcome to Snap Draft
+                <div className="pagehead">
+                    <h1>Snap Draft</h1>
+                </div>
 
-                          </h1>
-                      </div>
-                      <div className="Box-body border-bottom-0">
-                      <form>
-                          <dl className="form-group">
-                              <dt><label htmlFor="example-text">Username</label></dt>
-                              <input onChange={e => this.handleChange(e)} className="form-control" type="text" name='username' placeholder='Username' value={this.state.username} aria-label="Default input"></input>
+                <div className="Subhead">
+                    <div className="Subhead-heading border-bottom-0 d-flex">The worlds greatest novel drafting platform</div>
+              <div className="Subhead-actions"><a onClick={e => this.handleNewUserChange(e)} href="#url">{this.displayLoginLink()}</a></div>
+                </div>
+                      
 
-                          </dl>
-
-                          <dl className="form-group">
-                              <dt><label htmlFor="example-textarea">Password</label></dt>
-                              <dd>
-                              <input onChange={e => this.handleChange(e)} className="form-control" type="password" name='password' placeholder='Password' value={this.state.password} aria-label="Default input"></input>
-                              </dd>
-                          </dl>
-                          </form>
-                      </div>
-                      <div className="Box-footer border-top-0">
-                      <Button onClick={e => this.login(e)}>Log in</Button>
-                      <Button onClick={e => this.signup(e)}>New User</Button>
-                      </div>
-                    </div>
+                       
+                      
+                    {this.displayCredentialsForm()}
                     {this.state.error? this.renderError() : ""}
                 </div>
            
